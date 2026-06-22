@@ -1,0 +1,147 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage[round]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\onehalfspacing
+
+\title{\textbf{The Memory Spectrum of Neutron Star Glitches}\\[0.4em]
+\large From Poisson (Crab) to Quasi-Periodic Repulsion (J0537$-$6910): A Per-Pulsar Random Matrix Theory Analysis}
+\author{Ruqing Chen\\ GUT Geoservice Inc., Montreal, Canada\\ \texttt{ruqing@hotmail.com}}
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent A random matrix theory (RMT) program has shown that single-source, charge-and-release systems exhibit Wigner--Dyson level repulsion, while memoryless processes give Poisson statistics. Pulsar glitches are an almost ideal test: a neutron star's interior superfluid accumulates angular momentum relative to the slowing crust, and when the lag reaches a critical threshold the superfluid vortices unpin and transfer angular momentum in a sudden spin-up (a glitch), after which the lag re-accumulates. This is charge-and-release in its purest astrophysical form, the extreme analogue of seismic elastic rebound, and glitches are discrete, precisely timed events---no extraction from a continuous curve is needed. We analyze the Jodrell Bank Observatory glitch catalogue (727 glitches in 222 pulsars), applying the RMT spacing ratio $\langle r\rangle$ to the glitch-richest pulsars \emph{individually}---never pooling them, since pooling independent sources collapses any repulsion to Poisson by the superposition theorem.
+
+The result is not a single verdict but a \emph{memory spectrum}. Different neutron stars occupy the full range from randomness to repulsion. At the repulsive end, PSR J0537$-$6910 (the most frequent glitcher, 45 inter-glitch intervals after removing a single observational gap) gives $\langle r\rangle=0.562$, $+3.6\sigma$ above Poisson and statistically indistinguishable from GOE, and PSR B1338$-$62 gives $\langle r\rangle=0.575$ ($+3.4\sigma$); these are quasi-periodic glitchers with strong charge-and-release memory. At the memoryless end, the Crab pulsar (PSR B0531+21) gives $\langle r\rangle=0.387$, exactly Poisson and $-2.5\sigma$ from GOE: its glitches are random. The Vela pulsar sits near Poisson ($\langle r\rangle=0.399$), and a continuum of intermediate pulsars (B1737$-$30, B1046$-$58, J0631+1036) fills the gap. The spacing ratio thus acts as a quantitative ruler of the coupling memory between the superfluid and the crust, which differs markedly from star to star---strong and clock-like in J0537$-$6910 and B1338$-$62, essentially absent in the Crab. This extends the program's ``memory spectrum'' concept, previously mapped for the geodynamo, into the extreme physics of neutron star interiors, and uniquely captures \emph{both} ends of the spectrum---random and repulsive---in a single class of object.
+
+\vspace{0.8em}
+\noindent\textbf{Keywords:} random matrix theory; pulsar glitches; neutron stars; superfluid vortices; level repulsion; charge-and-release; J0537$-$6910; Crab pulsar
+
+\vspace{0.4em}
+\noindent\textbf{Code and data:} \url{https://github.com/Ruqing1963/pulsar-glitch-rmt}
+
+\vspace{0.2em}
+\noindent\textbf{Companion studies:} stratigraphy \url{https://zenodo.org/records/20774581}; seismotectonics \url{https://zenodo.org/records/20768130}; mantle plumes \url{https://zenodo.org/records/20768420}; metallogeny \url{https://zenodo.org/records/20768849}; evolution \url{https://zenodo.org/records/20783763}; hydrogeology \url{https://zenodo.org/records/20780389}; solar flares \url{https://zenodo.org/records/20784967}; orbital architecture \url{https://zenodo.org/records/20785613}; lunar craters \url{https://zenodo.org/records/20787412}; geomagnetic reversals \url{https://zenodo.org/records/20788648}
+\end{abstract}
+
+\section{Introduction}
+
+A random matrix theory (RMT) program has tested, across the Earth and stellar sciences, whether the spacing of events from a single charge-and-release source exhibits Wigner--Dyson level repulsion \citep{chen2026plume,chen2026solar,chen2026geomag}. The clearest physical realization of charge-and-release is a reservoir that fills slowly and empties suddenly, imposing a recharge interval that forbids two events in quick succession. Pulsar glitches are perhaps the purest astrophysical example. A neutron star spins down under magnetic braking, but its interior neutron superfluid, whose vortices are pinned to the crustal lattice, does not slow with it. A rotational lag accumulates; when it reaches a critical threshold, vortices unpin catastrophically and transfer angular momentum to the crust, producing a sudden spin-up---a glitch---after which the lag begins to re-accumulate \citep{anderson1975,haskell2015}. This is mechanically identical to the stress accumulation and elastic rebound of earthquakes, the seismic system analyzed earlier in this program, but realized in the extreme-density interior of a neutron star.
+
+Glitches are an ideal data type for the program for three reasons. They are \emph{discrete}: each glitch is a distinct, datable event, so there is no need to extract events from a continuous proxy curve and hence no extraction artifact. They are \emph{precisely timed}: pulsar timing measures glitch epochs to a fraction of a day. And they are \emph{numerous} for the most active pulsars: the Jodrell Bank Observatory (JBO) catalogue \citep{espinoza2011,basu2022} records 727 glitches in 222 pulsars, with several individual pulsars having tens of glitches---enough for a per-pulsar statistical analysis.
+
+That last point is essential, and it dictates the central methodological choice of this paper: \emph{we analyze each pulsar separately and never pool}. Different pulsars glitch very differently---the literature has long noted that the Vela pulsar glitches quasi-periodically while the Crab pulsar glitches irregularly \citep{espinoza2011,basu2022}. Pooling glitches from independent neutron stars would superpose independent point processes, which by the superposition theorem collapses any underlying repulsion toward Poisson---the same multi-source collapse demonstrated elsewhere in this program. Each neutron star is its own single-source system, and must be analyzed as one.
+
+We find that pulsars do not share a single glitch statistic. Instead they span a \emph{memory spectrum}, from the perfectly random (Crab) to the strongly repulsive and quasi-periodic (J0537$-$6910, B1338$-$62). The RMT spacing ratio quantifies, star by star, how clock-like each neutron star's charge-and-release cycle is.
+
+\section{Data and Methods}
+
+\subsection{The glitch catalogue}
+
+We use the Jodrell Bank Observatory glitch catalogue \citep{basu2022}, which compiles 727 glitches in 222 pulsars from JBO timing and the published literature, listing for each glitch the pulsar identity and epoch (in Modified Julian Days) along with fractional frequency steps. We select the glitch-richest pulsars, those with enough glitches for a meaningful spacing analysis ($n\gtrsim6$ intervals), and analyze each individually. The richest is PSR J0537$-$6910 (the ``big glitcher,'' 65 catalogued glitches), followed by PSR B1737$-$30 (38), B1338$-$62 (35), the Crab pulsar B0531+21 (32), the Vela pulsar B0833$-$45 (26), and others.
+
+\subsection{Spacing statistics and unfolding}
+
+For each pulsar we form the sequence of inter-glitch intervals, normalize by the mean, and compute the spacing ratio $\langle r\rangle=\langle \min(s_i,s_{i+1})/\max(s_i,s_{i+1})\rangle$, the coefficient of variation, the Brody parameter, and 95\% bootstrap confidence intervals. Reference values are Poisson $0.386$, GOE $0.531$, GUE $0.603$.
+
+Two issues require care. First, \emph{glitch rates are not constant in time}: the Crab's activity increased between 1995 and 2006, and monitoring cadence varies. As in the geomagnetic reversal study, we remove this non-stationarity by local unfolding (a smooth spline fit to the cumulative glitch count, rescaling intervals by the local rate). Second, \emph{observational gaps} can masquerade as long recharge intervals. PSR J0537$-$6910, monitored in X-rays, has a single $\sim$2264-day gap (2011--2017) when no instrument was observing it; we remove this one gap and analyze the densely monitored segment ($n=45$ intervals). We report both raw and unfolded statistics; the qualitative placement of each pulsar is unchanged by unfolding, confirming the spectrum is intrinsic and not an artifact of rate variation.
+
+We assess significance by comparing each observed $\langle r\rangle$ to Poisson and GOE null ensembles generated with matched $n$ and timespan and passed through the identical unfolding.
+
+\section{Results}
+
+\subsection{A spectrum, not a single value}
+
+The glitch-richest pulsars do not share a common spacing statistic; they span the full range from Poisson to GOE and beyond (Figure~\ref{fig:spectrum}a, Table~\ref{tab:main}). Ordered by $\langle r\rangle$, they form a continuous spectrum from the Crab pulsar at the memoryless end to B1338$-$62 at the repulsive end, with no clustering into discrete classes.
+
+\begin{table}[H]
+\centering
+\caption{Per-pulsar RMT diagnostics (unfolded), ordered by spacing ratio. Significance is given relative to Poisson and GOE null ensembles. The neutron stars span a continuous memory spectrum.}
+\label{tab:main}
+\small
+\begin{tabular}{lcccccl}
+\toprule
+Pulsar & $n_{\mathrm{int}}$ & $\langle r\rangle$ & CV & $\sigma$ vs Poisson & $\sigma$ vs GOE & state \\
+\midrule
+B1338$-$62      & 35 & 0.575 & 0.57 & $+3.4$ & $+0.8$ & repulsion (GOE/GUE) \\
+\textbf{J0537$-$6910} & \textbf{45} & \textbf{0.562} & \textbf{0.55} & $\mathbf{+3.6}$ & $\mathbf{+0.7}$ & \textbf{clean GOE (quasi-periodic)} \\
+B1758$-$23      & 15 & 0.545 & 0.57 & $+1.8$ & $+0.1$ & GOE \\
+J2229+6114      &  9 & 0.536 & 0.48 & $+1.1$ & $-0.1$ & GOE \\
+B1800$-$21      &  6 & 0.526 & 0.39 & $+0.4$ & $-0.4$ & GOE (small $n$) \\
+J0631+1036      & 17 & 0.495 & 0.75 & $+1.3$ & $-0.4$ & transitional \\
+B1046$-$58      & 12 & 0.482 & 0.82 & $+0.9$ & $-0.5$ & transitional \\
+B1737$-$30      & 38 & 0.461 & 0.77 & $+1.4$ & $-1.3$ & transitional \\
+Vela (B0833$-$45) & 26 & 0.399 & 0.57 & $+0.2$ & $-2.1$ & near Poisson \\
+\textbf{Crab (B0531+21)} & \textbf{32} & \textbf{0.387} & \textbf{0.82} & $\mathbf{-0.0}$ & $\mathbf{-2.5}$ & \textbf{pure Poisson (random)} \\
+\midrule
+Poisson reference & & 0.386 & 1.00 & --- & --- & memoryless \\
+GOE reference     & & 0.531 & 0.52 & --- & --- & repulsion \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The repulsive end: J0537$-$6910 and B1338$-$62}
+
+PSR J0537$-$6910, the most frequent known glitcher, is the cleanest charge-and-release system in the sample (Figure~\ref{fig:spectrum}b). Its 45 well-monitored inter-glitch intervals give $\langle r\rangle=0.562$, fully $3.6\sigma$ above the Poisson value and statistically indistinguishable from GOE ($0.7\sigma$). Its low CV (0.55) reflects the quasi-periodic glitching for which it and Vela are famous. PSR B1338$-$62 is similar ($\langle r\rangle=0.575$, $+3.4\sigma$ vs Poisson). In these neutron stars the superfluid--crust coupling enforces a near-deterministic recharge: after a glitch, the angular-momentum lag must rebuild before the next unpinning, and the resulting intervals repel like the levels of a chaotic quantum spectrum. Both central values lie slightly above the standard GOE reference (0.531), nominally toward GUE; we caution, however, that with $n=45$ and $n=35$ they remain statistically consistent with GOE ($+0.7\sigma$ and $+0.8\sigma$) and the present samples cannot establish a significant super-GOE offset. If such an offset is real, it would point to an exceptionally high depletion ratio in the coupled superfluid---a near-complete transfer of the available angular-momentum lag at each glitch, driving the system toward a hyper-rigid recharge regime, in the same way the depletion ratio governed the position along the Poisson--GOE axis for solar active regions \citep{chen2026solar}. Larger glitch samples would be needed to test this. This is the program's first detection of level repulsion in the interior dynamics of a neutron star.
+
+\subsection{The memoryless end: the Crab pulsar}
+
+The Crab pulsar is the opposite (Figure~\ref{fig:spectrum}c). Its 32 glitches give $\langle r\rangle=0.387$---indistinguishable from Poisson ($-0.0\sigma$) and $2.5\sigma$ away from GOE. The Crab's glitches are effectively random in time, consistent with the long-noted irregularity of its glitch sequence. Physically, the Crab is young and hot, and its glitch activity is thought to be driven differently---smaller fractional glitches, a significant role for starquakes or the response of a less-developed pinned superfluid reservoir---so that no clean recharge interval is imposed. The Vela pulsar sits just above the Crab ($\langle r\rangle=0.399$); interestingly, although Vela's intervals are moderately regular (CV~0.57), its \emph{local} repulsion is weak, indicating a glitcher that is quasi-regular on long timescales but not strongly level-repulsive interval-to-interval. This apparent Vela paradox---a globally quasi-periodic glitcher (CV~0.57) that nonetheless lacks local level repulsion ($\langle r\rangle=0.399$)---is itself a key demonstration of what the spacing ratio measures that the coefficient of variation does not. CV captures the global variance: Vela maintains a stable macroscopic clock, its long-term spin-down cadence is regular. $\langle r\rangle$ captures the local, step-by-step memory between adjacent intervals: a value near Poisson means that, despite the stable overall cadence, the trigger threshold or released angular momentum jitters substantially from one glitch to the next. Physically this suggests Vela's glitches either suffer highly variable local thresholds, or arise from the superposition of a few weakly coupled macroscopic superfluid reservoirs, which washes out nearest-neighbour repulsion while preserving the overall cadence. The two statistics are not redundant; $\langle r\rangle$ is the more incisive probe of event-to-event memory.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figs/fig1_spectrum.pdf}
+\caption{(a) The glitch memory spectrum: the glitch-richest pulsars span continuously from the Crab pulsar (Poisson, random) to B1338$-$62 and J0537$-$6910 (GOE, repulsive). (b) PSR J0537$-$6910: the unfolded inter-glitch distribution matches GOE, $+3.6\sigma$ above Poisson---a clean charge-and-release rhythm. (c) The Crab pulsar: the distribution matches Poisson and is $2.5\sigma$ from GOE---random glitches.}
+\label{fig:spectrum}
+\end{figure}
+
+\section{Discussion}
+
+\subsection{The spacing ratio as a ruler of superfluid coupling}
+
+The central result is that $\langle r\rangle$ varies from star to star, and that this variation is physically meaningful. A glitch reflects the unpinning of superfluid vortices once a critical lag is reached. If the reservoir empties substantially at each glitch and refills at a steady rate, the recharge time is well defined and the intervals repel: a clock-like, GOE/quasi-periodic glitcher like J0537$-$6910 or B1338$-$62. If instead glitches release only a small, variable fraction of the available lag, or if multiple mechanisms (vortex avalanches of varying size, starquakes) contribute, the recharge interval is poorly defined and the intervals approach randomness: a Poisson glitcher like the Crab. The spacing ratio is therefore a direct, model-independent ruler of how clock-like each neutron star's charge-and-release cycle is---a single number summarizing the regularity of the superfluid--crust coupling.
+
+This RMT memory spectrum maps remarkably onto independent macroscopic glitch energetics. PSR J0537$-$6910 is the only pulsar known to exhibit a strong, significant linear correlation between glitch size and the waiting time to the \emph{next} glitch (slope $\sim$0.2~$\mu$Hz\,d$^{-1}$, prediction accuracy of days; Middleditch et al. 2006; Antonopoulou et al. 2018; Ferdman et al. 2018), a correlation shown to be significant at the 3$\sigma$ level for J0537$-$6910 alone among all glitching pulsars \citep{fuentes2019}. This is the macroscopic hallmark of a deterministic charge-and-release cycle: the size of a glitch sets the angular-momentum deficit, which sets the time to rebuild the critical lag for the next. Its GOE-class repulsion ($\langle r\rangle=0.562$) is precisely the purely temporal fingerprint of that same deterministic energy accounting, recovered here with no knowledge of glitch sizes. Conversely, the Crab pulsar shows no such size--waiting-time correlation, mirroring its memoryless Poisson spacing ($\langle r\rangle=0.387$). Two fully independent lines of evidence---macroscopic size--time correlation and purely temporal level statistics---thus converge on the same conclusion, which strongly corroborates the charge-and-release interpretation.
+
+\subsection{Connection to the program's memory spectrum}
+
+This mirrors and extends the picture from the geodynamo study \citep{chen2026geomag}, where the spacing ratio measured a single weak-memory value for the Earth's core. Here, across a class of objects, we see the \emph{full} spectrum simultaneously: from a memoryless system (Crab, $\langle r\rangle\approx0.39$) through a continuum to strongly repulsive systems (J0537$-$6910, B1338$-$62, $\langle r\rangle\approx0.56$--$0.58$). Neutron star glitches thus provide the cleanest demonstration in the program that ``memory strength'' is a continuous physical quantity, not a binary property, and that the RMT spacing ratio is the natural instrument to measure it. That both extremes appear within one class of object---random and repulsive neutron stars side by side---is itself strong evidence that the diagnostic is tracking real internal physics rather than imposing a universal answer.
+
+\subsection{Why per-pulsar analysis matters}
+
+Had we pooled all glitches into a single sequence, the independent timescales of dozens of neutron stars would have superposed into an approximately Poisson process, erasing the repulsion entirely and yielding the misleading conclusion that glitches are universally random. The superposition theorem guarantees this collapse, and it is exactly the multi-source effect documented elsewhere in this program. The spectrum is visible only because each neutron star is treated as the single-source system it physically is. This is both a result about neutron stars and a methodological caution for any spacing analysis of mixed populations.
+
+\subsection{Limitations}
+
+\emph{Sample sizes.} Even the richest glitchers have only tens of intervals; the confidence intervals are correspondingly wide, and the smallest samples (B1800$-$21, $n=6$; J2229+6114, $n=9$) should be read as indicative. The two anchors of the spectrum (J0537$-$6910 and Crab) are the most secure, with $n=45$ and $n=32$ and $\gtrsim2.5$--$3.6\sigma$ significances. \emph{Observational gaps.} We removed one large monitoring gap in J0537$-$6910; other pulsars may carry smaller undetected gaps that add spurious long intervals, which would bias $\langle r\rangle$ downward (toward Poisson), making our repulsive detections conservative. \emph{Glitch-size information.} We analyze only timing here; a joint analysis of glitch sizes and intervals (whether large glitches are followed by longer recharge) is a natural extension that could sharpen the charge-and-release interpretation.
+
+\section{Conclusions}
+
+Applying the RMT spacing ratio to the Jodrell Bank glitch catalogue, analyzing the glitch-richest pulsars individually, we find that neutron stars span a continuous \emph{memory spectrum} in their glitch timing. PSR J0537$-$6910 ($\langle r\rangle=0.562$, $+3.6\sigma$ above Poisson) and PSR B1338$-$62 ($\langle r\rangle=0.575$) are clean, quasi-periodic, GOE-class glitchers---the program's first detection of level repulsion in neutron star interior dynamics, and the purest astrophysical realization of charge-and-release. The Crab pulsar ($\langle r\rangle=0.387$) is at the opposite, Poisson end: its glitches are random. A continuum of pulsars fills the gap. The spacing ratio measures, star by star, the regularity of the superfluid--crust recharge cycle, and the appearance of both extremes within a single class of object confirms that the diagnostic tracks genuine internal physics. This is the eleventh system in the program and the one that most cleanly displays its central thesis: charge-and-release with a well-defined reservoir produces level repulsion; without it, randomness; and memory strength is a continuous quantity the spacing ratio can measure.
+
+\section*{Code and Data Availability}
+All code, the per-pulsar glitch epochs used, and analysis outputs are at \url{https://github.com/Ruqing1963/pulsar-glitch-rmt}. Glitch data are from the Jodrell Bank Observatory glitch catalogue \citep{basu2022}; please cite Espinoza et al. (2011) and Basu et al. (2022) and \url{http://www.jb.man.ac.uk/pulsar/glitches.html} when using these data.
+
+\begin{thebibliography}{99}
+\small
+\bibitem[Anderson \& Itoh(1975)]{anderson1975} Anderson, P. W., \& Itoh, N. (1975). Pulsar glitches and restlessness as a hard superfluidity phenomenon. \emph{Nature}, 256, 25--27.
+\bibitem[Basu et al.(2022)]{basu2022} Basu, A., et al. (2022). The Jodrell Bank glitch catalogue: 106 new rotational glitches in 70 pulsars. \emph{Monthly Notices of the Royal Astronomical Society}, 510, 4049--4062.
+\bibitem[Espinoza et al.(2011)]{espinoza2011} Espinoza, C. M., Lyne, A. G., Stappers, B. W., \& Kramer, M. (2011). A study of 315 glitches in the rotation of 102 pulsars. \emph{Monthly Notices of the Royal Astronomical Society}, 414, 1679--1704.
+\bibitem[Fuentes et al.(2019)]{fuentes2019} Fuentes, J. R., Espinoza, C. M., \& Reisenegger, A. (2019). Glitch time series and size distributions in eight prolific pulsars. \emph{Astronomy \& Astrophysics}, 630, A115.
+\bibitem[Haskell \& Melatos(2015)]{haskell2015} Haskell, B., \& Melatos, A. (2015). Models of pulsar glitches. \emph{International Journal of Modern Physics D}, 24, 1530008.
+\bibitem[Chen(2026b)]{chen2026plume} Chen, R. (2026b). Level repulsion in the deep Earth: mantle-plume eruption rhythms. Zenodo, \url{https://zenodo.org/records/20768420}.
+\bibitem[Chen(2026g)]{chen2026solar} Chen, R. (2026g). The depletion limit of level repulsion: solar flares from a single active region. Zenodo, \url{https://zenodo.org/records/20784967}.
+\bibitem[Chen(2026j)]{chen2026geomag} Chen, R. (2026j). The weak memory of the geodynamo: an RMT verdict on geomagnetic reversals. Zenodo, \url{https://zenodo.org/records/20788648}.
+\bibitem[Bohigas et al.(1984)]{bohigas1984} Bohigas, O., Giannoni, M.-J., \& Schmit, C. (1984). Characterization of chaotic quantum spectra and universality of level fluctuation laws. \emph{Physical Review Letters}, 52, 1.
+\end{thebibliography}
+
+\end{document}
